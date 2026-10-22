@@ -1,0 +1,29 @@
+{
+  "name": "the-mba-mentor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --host 0.0.0.0",
+    "build": "nuxt build",
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "check:worker": "node scripts/check-worker-output.mjs",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "4.6.2"
+  },
+  "devDependencies": {
+    "sass": "^1.93.0",
+    "wrangler": "^4.135.0"
+  },
+  "engines": {
+    "node": ">=22.22.3"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "esbuild@0.28.2": true,
+    "workerd@1.20261019.1": true
+  }
+}
