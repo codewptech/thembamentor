@@ -21,13 +21,13 @@ The first `npm install` generates a lockfile. **Commit `package-lock.json`** so 
 
 Cloudflare Workers Git connection: choose **codewptech/thembamentor** and the folder containing this project's `package.json` as the repository root.
 
-| Cloudflare UI field | Value |
-|---|---|
-| Project name | `thembamentor` |
-| Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
-| Preview command | `npx wrangler preview` (Cloudflare UI default; for reliable local preview use `npm run preview`) |
-| Framework / output | **Workers**, NOT Cloudflare Pages static assets |
+| Cloudflare UI field | Value                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| Project name        | `thembamentor`                                                                                   |
+| Build command       | `npm run build`                                                                                  |
+| Deploy command      | `npx wrangler deploy`                                                                            |
+| Preview command     | `npx wrangler preview` (Cloudflare UI default; for reliable local preview use `npm run preview`) |
+| Framework / output  | **Workers**, NOT Cloudflare Pages static assets                                                  |
 
 The explicit configuration in `wrangler.jsonc` defines:
 
@@ -63,7 +63,7 @@ For deployment directly from your own terminal:
 npm run deploy
 ```
 
-Cloudflare dashboard Git builds use the separate `npm run build` and `npx wrangler deploy` steps listed above; do not run the combined deploy script as the dashboard *deploy command* (it would rebuild unnecessarily).
+Cloudflare dashboard Git builds use the separate `npm run build` and `npx wrangler deploy` steps listed above; do not run the combined deploy script as the dashboard _deploy command_ (it would rebuild unnecessarily).
 
 **Note:** `npm run generate` is deliberately NOT provided: this is an SSR Workers build, not a fully static website.
 
