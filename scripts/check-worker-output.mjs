@@ -1,44 +1,54 @@
-// Verify the artifacts expected by wrangler.jsonc after `npm run build`.
-// Usage: npm run check:worker
 import { existsSync, readdirSync, statSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const configRaw = readFileSync(
-  path.join(root, "wrangler.jsonc"),
-  "utf8",
-).replace(/^\s*\/\/.*$/gm, "");
-const config = JSON.parse(configRaw);
-const entry = path.join(root, config.main);
-const assets = path.join(root, config.assets.directory);
 
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
+
+const configPath = path.join(root, "wrangler.jsonc");
+const entry = path.join(root, ".output/server/index.mjs");
+const assets = path.join(root, ".output/public");
+
+assert(existsSync(configPath), "wrangler.jsonc is missing");
+
+const config = readFileSync(configPath, "utf8");
+
+// Verify expected Wrangler configuration
 assert(
-  existsSync(entry),
-  `Cloudflare SSR Worker entry point missing: ${entry}`,
+  /"main"\s*:\s*"\.output\/server\/index\.mjs"/.test(config),
+  "Incorrect Worker entry point in wrangler.jsonc",
 );
+
+assert(
+  /"directory"\s*:\s*"\.output\/public"/.test(config),
+  "Incorrect assets directory in wrangler.jsonc",
+);
+
+assert(
+  /"nodejs_compat"/.test(config),
+  "Cloudflare nodejs_compat flag is missing",
+);
+
+// Verify build output
+assert(existsSync(entry), `Worker entry point missing: ${entry}`);
+
 assert(
   existsSync(assets) && statSync(assets).isDirectory(),
   `Static assets directory missing: ${assets}`,
 );
-assert(
-  config.compatibility_flags.includes("nodejs_compat"),
-  "Cloudflare nodejs_compat flag is missing",
-);
-assert(
-  readdirSync(assets).length > 0,
-  "No static assets found; check the Nuxt build output",
-);
+
+assert(readdirSync(assets).length > 0, "No static assets found");
+
+// Sitemap must remain server-generated
 assert(
   !existsSync(path.join(assets, "sitemap.xml")),
-  "sitemap.xml was generated statically; it must remain a runtime route",
+  "Sitemap was generated statically",
 );
-console.log(
-  "PASS: Cloudflare Worker entry point and static assets are present.",
-);
-console.log("PASS: /sitemap.xml is not being pre-rendered.");
-console.log(
-  "NEXT: run `npx wrangler dev` and test /, /blog, and /sitemap.xml over HTTP.",
-);
+
+console.log("PASS: Cloudflare Worker entry point exists.");
+console.log("PASS: Static assets directory exists.");
+console.log("PASS: Wrangler configuration references expected outputs.");
+console.log("PASS: Dynamic sitemap is not pre-rendered.");
+console.log("SUCCESS: Worker build verification completed.");
