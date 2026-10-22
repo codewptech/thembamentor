@@ -10,7 +10,7 @@ export default defineEventHandler((event) => {
 
   const config = useRuntimeConfig(event);
   const base = String(
-    config.public.siteUrl || "https://thembamentor.in",
+    config.public.siteUrl || "https://www.thembamentor.in",
   ).replace(/\/$/, "");
   const staticPaths = [
     "/",

@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      siteUrl: "https://thembamentor.in",
+      siteUrl: "https://www.thembamentor.in",
       contactEmail: "info.thembamentor@gmail.com",
     },
   },
